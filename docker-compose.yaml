@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  service-mysql:
+    image: mysql:latest
+    environment:
+     MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    ports:
+      - "3306"
+    volumes:
+      - ./mysql/db-data:/var/lib/mysql
+      - ./database/schema.sql:/data/db/init.sql
+    command: --init-file /data/db/init.sql
+    networks:
+      - my-network
+  service-hello-world:
+    build: ./source/
+    environment:
+      DB_HOST: service-mysql
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+    depends_on:
+      - service-mysql
+networks:
+  my-network:

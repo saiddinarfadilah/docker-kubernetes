@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+        - name: hello-world
+          image: saiddinarfadilah/hello-world:spring
+          env:
+            - name: DB_HOST
+              value: mysql-service.default.svc.cluster.local
+            - name: DB_USERNAME
+              value: admin
+            - name: DB_PASSWORD
+              value: admin
